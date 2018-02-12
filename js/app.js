@@ -1,12 +1,12 @@
 "use strict";
 
-mapboxgl.accessToken = '';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHJ6aG91cSIsImEiOiJjamQwcmxoejQxeWhxMzNvMTV3bGxsbWk5In0.4Wx5qBfTOd_7wvwwLZ4R6A';
 
-const landsat_services = '';
+const landsat_services = 'https://isicgvf444.execute-api.us-west-2.amazonaws.com/production/landsat';
 const sentinel_services = '';
 const cbers_services  = '';
-
 const access_token = '';
+const sat_api = 'https://api.developmentseed.org/satellites/?';
 
 let scope = {};
 const config = {
@@ -122,8 +122,11 @@ const buildQueryAndRequestL8 = (features) => {
   Promise.all(features.map(e => {
     const row = zeroPad(e.properties.ROW, 3);
     const path = zeroPad(e.properties.PATH, 3);
-    const query = `${landsat_services}/search?row=${row}&path=${path}&full=true`;
+//    const query = `${landsat_services}/search?row=${row}&path=${path}&full=true`;
+//    const query = `${landsat_services}/search?row=${row}&path=${path}&full=true`;
 
+    const query = `${sat_api}satellite_name=landsat-8&row=${row}&path=${path}&limit=2000`;
+    //console.log (query)
     return $.getJSON(query).done()
       .then(data => {
         if (data.meta.found === 0) throw new Error('No image found in sat-api');
@@ -141,12 +144,16 @@ const buildQueryAndRequestL8 = (features) => {
         let scene = {};
         scene.path = data[i].path;
         scene.row = data[i].row;
-        scene.date = data[i].acquisition_date;
+        //scene.date = data[i].acquisition_date;
+        scene.date = data[i].acquisitionDate;
         scene.cloud = data[i].cloud_coverage;
         scene.browseURL = data[i].browseURL;
-        scene.thumbURL = data[i].thumbURL;
+        //scene.thumbURL = data[i].thumbURL;
+        //scene.thumbURL = data[i].aws_thumbnail;
+        scene.thumbURL = data[i].thumbnail;
+        scene.LANDSAT_PRODUCT_ID = data[i].LANDSAT_PRODUCT_ID;
         scene.scene_id = data[i].scene_id;
-        scene.type = data[i].category;
+        scene.type = data[i].COLLECTION_CATEGORY;
         res[scene.scene_id] = scene;
       }
 
@@ -167,8 +174,11 @@ const buildQueryAndRequestL8 = (features) => {
       results.sort(sortScenes);
 
       for (let i = 0; i < results.length; i += 1) {
+              //console.log(results)
+                var awsID = (Date.parse(results[i].date) < Date.parse('2017-05-01')) ?  results[i].scene_id.replace(/LGN0[0-9]/, 'LGN00') : results[i].LANDSAT_PRODUCT_ID;
+                //console.log(awsID)
         $('.list-img').append(
-          `<li data-row="${results[i].row}" data-path="${results[i].path}" data-type="${results[i].type}" data-date="${results[i].date}" data-cloud="${results[i].cloud}" class="list-element" onclick="initSceneL8('${results[i].scene_id}','${results[i].date}')" onmouseover="overImageL8(this)" onmouseout="outImage()">` +
+          `<li data-row="${results[i].row}" data-path="${results[i].path}" data-type="${results[i].type}" data-date="${results[i].date}" data-cloud="${results[i].cloud}" class="list-element" onclick="initSceneL8('${awsID}','${results[i].date}')" onmouseover="overImageL8(this)" onmouseout="outImage()">` +
             `<img class="img-item" src="${results[i].thumbURL}">` +
           '</li>'
         );
@@ -380,13 +390,13 @@ const initSceneL8 = (sceneID, sceneDate) => {
 
   let min = $("#minCount").val();
   let max = $("#maxCount").val();
-  const query = `${landsat_services}/metadata/${sceneID}?'pmim=${min}&pmax=${max}&access_token=${config.access_token}`;
-
+//  let min = 0;
+//  let max = 100;
+  const query = `${landsat_services}/metadata/${sceneID}?pmim=${min}&pmax=${max}`;
   $.getJSON(query).done()
     .then(data => {
       scope.imgMetadata = data;
       updateRasterTile();
-
       let scene_info;
       if (/L[COTEM]08_L\d{1}[A-Z]{2}_\d{6}_\d{8}_\d{8}_\d{2}_(T1|RT)/.exec(sceneID)) {
           scene_info = parseSceneid_c1(sceneID);
@@ -496,7 +506,8 @@ const updateRasterTile = () => {
   $('#btn-text').addClass('none');
   $('#dl').addClass('none');
 
-  const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  //const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  const sat = 'landsat';
   const meta = scope.imgMetadata;
   let attrib;
   let maxzoom;
@@ -524,7 +535,6 @@ const updateRasterTile = () => {
     default:
       throw new Error(`Invalid ${source_id}`);
   }
-
   let params = {
     'tile': config.tile,
     'access_token': config.access_token
@@ -552,9 +562,8 @@ const updateRasterTile = () => {
     url = `${endpoint}/processing/${meta.sceneid}/{z}/{x}/{y}.png`;
     params.ratio = document.getElementById('ratio-selection').value;
   }
-
   const url_params = Object.keys(params).map(i => `${i}=${params[i]}`).join('&');
-
+console.log(url+'?'+url_params);
   // NOTE: Calling 512x512px tiles is a bit longer but gives a
   // better quality image and reduce the number of tiles requested
 
@@ -592,7 +601,13 @@ const updateRasterTile = () => {
     pmin: $("#minCount").val(),
     pmax: $("#maxCount").val()
   }
-  if (params.rgb) historyParams.rgb = params.rgb;
+//  let historyParams = {
+//    sceneid: meta.sceneid,
+//    pmin: 2,
+//    pmax:98
+//  }
+console.log(historyParams);
+   if (params.rgb) historyParams.rgb = params.rgb;
   if (params.ratio) historyParams.ratio = params.ratio;
   if (params.tile) historyParams.tile = params.tile;
   updateHistory(historyParams);
@@ -600,7 +615,8 @@ const updateRasterTile = () => {
 
 const updateMetadata = () => {
   if (!map.getSource('raster-tiles')) return;
-  const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  //const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  const sat = 'landsat';
   switch(sat) {
     case 'landsat':
       initSceneL8(scope.imgMetadata.sceneid, scope.imgMetadata.date);
@@ -733,7 +749,8 @@ const showSiteInfo = () => {
 
 const getFeatures = (e) => {
 
-  const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  //const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  const sat = 'landsat';
   let pr;
 
   let features = map.queryRenderedFeatures(e.point, {layers: ['Grid']});
@@ -761,7 +778,8 @@ const getFeatures = (e) => {
 
 const updateSat = () => {
   reset();
-  const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  //const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+  const sat = 'landsat'
   switch(sat) {
     case 'landsat':
       landsatUI();
@@ -944,7 +962,7 @@ const cbersUI = () => {
     $('#ratio-selection').append('<option value="ndvi">NDVI</option>');
 };
 
-document.getElementById('satellite-toggle').addEventListener('change', updateSat);
+//document.getElementById('satellite-toggle').addEventListener('change', updateSat);
 
 const updateHistory = (params) => {
   const url_params = Object.keys(params).map(i => `${i}=${params[i]}`).join('&');
@@ -974,7 +992,8 @@ map.on('click', (e) => {
   const features = getFeatures(e);
   if (features.length !== 0) {
     let pr;
-    const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+    //const sat = $(".map-top-right .toggle-group input:checked")[0].getAttribute('sat');
+    const sat = 'landsat';
     switch(sat) {
       case 'landsat':
         pr = [].concat.apply([], ['any', features.map(e => {
@@ -1130,5 +1149,3 @@ map.on('load', () => {
   }
 });
 
-console.log("You think you can find something here ?");
-console.log("The project is fully open-source. Go check github.com/remotepixel/viewer.remotepixel.ca ");

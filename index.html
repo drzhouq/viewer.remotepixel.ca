@@ -6,21 +6,7 @@
 
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@RemotePixel" />
-	<meta name="twitter:title" content="RemotePixel Viewer" />
-	<meta name="twitter:description" content="A simple and fast Satellite data viewer viewer powered by AWS Lambda" />
-
-	<meta name="twitter:creator" content="@_VincentS_" />
-	<meta name="twitter:image:src" content="https://viewer.remotepixel.ca/img/viewer.jpg" />
-
-	<meta property="og:title" content="RemotePixel Viewer" />
-	<meta property="og:url" content="https://viewer.remotepixel.ca" />
-	<meta property="og:image" content="https://viewer.remotepixel.ca/img/viewer.jpg" />
-	<meta property="og:description" content="A simple and fast Satellite data viewer powered by AWS Lambda" />
-	<meta property="og:site_name" content="RemotePixel" />
-
-	<title>RemotePixel Viewer</title>
+	<title>Satelytics Landsat 8 Viewer</title>
 
 	<script src='https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
@@ -29,15 +15,6 @@
 	<script async defer src="https://api.mapbox.com/mapbox-assembly/v0.19.0/assembly.js"></script>
 
   <link href="/css/style.css" rel="stylesheet">
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	  ga('create', 'UA-60678866-1', 'auto');
-	  ga('send', 'pageview');
-	</script>
 
 </head>
 
@@ -50,86 +27,27 @@
 							<svg class='icon icon--l txt-xl'><use xlink:href='#icon-close'/></svg>
 					</button>
 
-					<h2>RemotePixel Viewer</h2>
-					<p>A simple and fast Landsat-8, Sentinel-2 and CBERS-4 data viewer powered by AWS Lambda</p>
-
-					<img class="img-responsive center" src="img/viewer.jpg">
+					<h2>Satelytics Viewer</h2>
+					<p>A viewer to demonstrate Satelytics.io processing capability </p>
+					<p>All the processing on completed on the fly using landsa 8 data stored on Amazon AWS</p>
+					<p>This is based on viewer.remotepixel.ca</p>
 
 					<h4>HowTo</h4>
 					<ul>
 							<li>Click on the blue tile of your choice</li>
 							<li>Select the image you want to display on bottom list</li>
-							<li>Change the band combination and the histogram cut on the option pane (top left)</li>
+							<li>Select the processing algorithm to view rendered data</li>
+					</ul>
+					
+                    <h4>At <a href="http://www.satelytics.com">Satelytics</a> we provides even more:</h4>
+					<ul>
+                            <li>methane, oil and water leakage detection</li>
+							<li>right-of-way encroachment and intrusion detection</li>
+							<li>land movement monitoring</li>
+							<li>green infrastructure monitoring</li>
+                            <li>and many more in higher <a href="https://www.satelytics.com/request-a-demo">resolution</a>....</li>
 					</ul>
 
-					<h4>Map Tiles</h4>
-					<p>Tile served are TOA (Top Of Atmosphere) corrected and rescaled to 0->255 rgb values. Each tile is a direct response of ONE AWS Lambda function.</p>
-					<p>Landsat True Color RGB (4,3,2) is panshaperpenned and serverd at 15m resolution. Sentinel-2 is served at 10m resolution.</p>
-
-					<h4>Info</h4>
-					<p>Landsat/Sentinel/CBERS search results is powered by
-						<a href="https://github.com/remotepixel/aws-sat-api" target="_blank">RemotePixel Satellite API</a>.
-				  </p>
-
-					<p>Images previews are from Landsat, Sentinel and CBERS <a href="https://aws.amazon.com/fr/public-datasets/" target="_blank">AWS Public Dataset</a>.</p>
-
-					<p>This project is powered by Mapbox-GL API and the awesome vector tile technology develloped by <a href="https://mapbox.com" target="_blank">Mapbox</a>.</p>
-
-					<p>Want more info about AWS Lambda for raster tile serving, continue reading: <a href="https://blog.mapbox.com/combining-the-power-of-aws-lambda-and-rasterio-8ffd3648c348">Blog post</a> on Mapbox.com</p>
-
-					<h4>Public dataset on AWS</h4>
-					<p>Landsat-8 data available on AWS are in Level <strong>1T</strong>:</p>
-					<blockquote>
-							Standard Terrain Correction (Level 1T) -
-							provides systematic radiometric and geometric accuracy by incorporating ground
-							control points while employing a Digital Elevation Model (DEM) for topographic accuracy.
-							Geodetic accuracy of the product depends on the accuracy of the
-							ground control points and the resolution of the DEM used:
-							Ground control points used for Level 1T correction are derived from the GLS2000 data set.
-							DEM sources include SRTM, NED, CDED, DTED, GTOPO 30, and GIMP.
-
-							<p>Info: <a href="http://landsat.usgs.gov/Landsat_Processing_Details.php" target="_blank">http://landsat.usgs.gov/</a></p>
-					</blockquote>
-
-					<p>Sentinel-2 data available on AWS are in Level <strong>1C</strong>:</p>
-					<blockquote>
-						Level-1C processing includes radiometric and geometric corrections including ortho-rectification and spatial registration on a global reference system with sub-pixel accuracy.
-						Level-1C processing is broken down into the following steps:
-						- Tiles association: selection of pre-defined tiles intersecting the footprint of the required image.
-						- Resampling grid computation: enabling linking of the native geometry image to the target geometry image (ortho-rectified).
-						- Resampling of each spectral band in the geometry of the ortho-image using the resampling grids and an interpolation filter. Calculation of the TOA reflectances also occurs in this step.
-						- Masks computation: cloud and land/water masks are generated.
-						- Imagery compression of the resultant Level-1C imagery via the JPEG2000 algorithm and a GML geographic imagery-encoded header.
-						<p>Info: <a href="https://sentinel.esa.int/web/sentinel/user-guides/sentinel-2-msi/processing-levels/level-1" target="_blank">https://sentinel.esa.int</a></p>
-
-						Reflectance, often between 0 and 1, is converted into integer values, in order to preserve the dynamic range of the data by applying a fixed coefficient (1000 by default).
-						<p>Info: <a href="https://sentinel.esa.int/web/sentinel/technical-guides/sentinel-2-msi/level-1c/algorithm" target="_blank">https://sentinel.esa.int</a></p>
-					</blockquote>
-
-
-					<p>CBERS-4:</p>
-					<blockquote>
-						DEMO, more info soon.
-					</blockquote>
-
-					<h4>Create your Own</h4>
-					<p><strong><a href="https://github.com/mapbox/landsat-tiler">https://github.com/mapbox/landsat-tiler</a></strong></p>
-					<p><strong><a href="https://github.com/mapbox/sentinel-tiler">https://github.com/mapbox/sentinel-tiler</a></strong></p>
-					<p><strong><a href="https://github.com/mapbox/sentinel-tiler">https://github.com/mapbox/cbers-tiler</a></strong></p>
-
-					<p><strong><a href="https://github.com/remotepixel/viewer.remotepixel.ca">https://github.com/remotepixel/viewer.remotepixel.ca</a></strong></p>
-
-					<h4>Contact</h4>
-					<p>Questions or comments to <a href="mailto:contact@remotepixel.ca">contact@remotepixel.ca</a></p>
-
-					<h4>Thanks</h4>
-
-					<div class="thanks-images grid">
-						<a href="https://www.mapbox.com" target="_blank" class="col col--3 col--offl1 mr6 ml6"><img class="img-responsive" src="img/mapbox.png"></a>
-						<a href="https://aws.amazon.com/" target="_blank" class="col col--3 mr6 ml6"><img class="img-responsive" src="img/awservice.png"></a>
-					</div>
-
-					<div class="site-version">Version: 2.0</div>
 				</div>
 			</div>
 
@@ -137,20 +55,33 @@
 
 				<div id='menu' class='flex-child w240 w300-ml absolute ml6 mt6 bg-white z2'>
 					<ul id='toolbar' class='grid'>
-						<li id='rgb' class="col col--4 active" title="rgb" onclick="switchPane(this)">
-							<svg class='icon icon--l inline-block'><use xlink:href='#icon-menu'/></svg>
-						</li>
-						<li id='band' class="col col--4" title="band" onclick="switchPane(this)">
-							<svg class='icon icon--l inline-block'><use xlink:href='#icon-minus'/></svg>
-						</li>
 						<li id='process' class="col col--4" title="process" onclick="switchPane(this)">
 							<svg class='icon icon--l inline-block'><use xlink:href='#icon-raster'/></svg>
+						</li>
+						<li id='rgb' class="col col--4 active" title="rgb" onclick="switchPane(this)">
+							<svg class='icon icon--l inline-block'><use xlink:href='#icon-menu'/></svg>
 						</li>
 					</ul>
 
 					<div id='menu-content' class='relative'>
 
-						<section id='rgb' class="px12 py12 active">
+						<section id='process' class="px12 py12">
+							<div class='txt-h5 mb12 color-black'>Constituents</div>
+							<div class='select-container w-full'>
+								<select id='ratio-selection' class='select select--s select--stroke  w-full color-black'>
+									<option value="as">Arsenic</option>
+									<option value="cu">Copper</option>
+									<option value="mn">Maganese</option>
+									<option value="ba">Barium</option>
+									<option value="pc">Phycocyanin</option>
+									<option value="chla">Chlorophyll a</option>
+									<option value="temp">Temperature</option>
+									<option value="turb">Turbidity</option>
+								</select>
+								<div class='select-arrow color-black'></div>
+							</div>
+						</section>
+							<section id='rgb' class="px12 py12 active">
 							<div class='txt-h5 mb12 color-black'>Band Combinations</div>
 							<div class='select-container wmax-full'>
 								<select id='rgb-selection' class='select select--s select--stroke  wmax-full color-black'>
@@ -219,36 +150,7 @@
 							</div>
 						</section>
 
-						<section id='band' class="px12 py12">
-							<div class='txt-h5 mb12 color-black'>Band Selection</div>
-							<div id='band-buttons' class='px6 py6'>
-								<button onclick='updateBands(this)' value='1' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m active'>01</button>
-								<button onclick='updateBands(this)' value='2' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>02</button>
-								<button onclick='updateBands(this)' value='3' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>03</button>
-								<button onclick='updateBands(this)' value='4' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>04</button>
-								<button onclick='updateBands(this)' value='5' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>05</button>
-								<button onclick='updateBands(this)' value='6' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>06</button>
-								<button onclick='updateBands(this)' value='7' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>07</button>
-								<button onclick='updateBands(this)' value='9' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>09</button>
-								<button onclick='updateBands(this)' value='10' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>10</button>
-								<button onclick='updateBands(this)' value='11' class='btn btn--stroke btn--stroke--2 mx6 my6 txt-m'>11</button>
-							</div>
-						</section>
-
-						<section id='process' class="px12 py12">
-							<div class='txt-h5 mb12 color-black'>Band ratios</div>
-							<div class='select-container w-full'>
-								<select id='ratio-selection' class='select select--s select--stroke  w-full color-black'>
-									<option value="ndvi">NDVI</option>
-									<option value="ndsi">NDSI</option>
-									<option value="ndwi">NDWI</option>
-									<option value="ac-index">AC-Index</option>
-								</select>
-								<div class='select-arrow color-black'></div>
-							</div>
-						</section>
-
-						<div id='params' class="px12 py12 relative">
+					<div id='params' class="px12 py12 relative">
 							<div class='txt-h5 mb12 color-black'>Histogram Cut</div>
 							<div class='px6 py6'>
 								<input id="minCount" class='input input--s wmax60 inline-block align-center color-black' value='2' />
@@ -256,7 +158,7 @@
 								<button class='btn bts--xs btn--stroke bg-darken25-on-hover inline-block txt-s color-black ml12' onclick="updateMetadata()">Apply</button>
 							</div>
 						</div>
-					</div>
+											</div>
 
 					<button id='btn-hide'>
 						<svg id='left' class='icon'><use xlink:href='#icon-arrow-left'/></svg>
@@ -270,14 +172,6 @@
 					  <label class='toggle-container'>
 					    <input sat="landsat" checked name='toggle-sat' type='radio' />
 					    <div class='toggle color-gray-dark-on-hover'>Landsat</div>
-					  </label>
-					  <label class='toggle-container'>
-					    <input sat="sentinel" name='toggle-sat' type='radio' />
-					    <div class='toggle color-gray-dark-on-hover'>Sentinel</div>
-					  </label>
-						<label class='toggle-container'>
-					    <input sat="cbers" name='toggle-sat' type='radio' />
-					    <div class='toggle color-gray-dark-on-hover'>CBERS</div>
 					  </label>
 					</div>
 				</div>
