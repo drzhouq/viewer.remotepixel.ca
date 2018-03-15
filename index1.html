@@ -21,7 +21,7 @@
 <body>
 	<div class="content">
 
-			<div class="site-info in z5">
+			<div class="site-info z5">
 				<div class="info prose">
 					<button id='btn-close-help' class='btn-close-help' onclick='showSiteInfo()'>
 							<svg class='icon icon--l txt-xl'><use xlink:href='#icon-close'/></svg>
@@ -53,23 +53,14 @@
 
 			<div class="main-pane">
 
-				<div id='menu' class='flex-child w240 w300-ml absolute ml6 mt6 bg-white z2'>
-					<ul id='toolbar' class='grid'>
-						<li id='process' class="col col--4" title="process" onclick="switchPane(this)">
-							<svg class='icon icon--l inline-block'><use xlink:href='#icon-raster'/></svg>
-						</li>
-						<li id='rgb' class="col col--4 active" title="rgb" onclick="switchPane(this)">
-							<svg class='icon icon--l inline-block'><use xlink:href='#icon-menu'/></svg>
-						</li>
-					</ul>
+				<div id='menu' class='flex-child w240 w300-ml absolute ml6 mt6 bg-white z2 off'>
 
 					<div id='menu-content' class='relative'>
 
-						<section id='process' class="px12 py12">
+						<section id='process' class="px12 py12 active">
 							<div class='txt-h5 mb12 color-black'>Constituents</div>
 							<div class='select-container w-full'>
 								<select id='ratio-selection' class='select select--s select--stroke  w-full color-black'>
-									<option value="tpw">Total Phosphorus in Water</option>
 									<option value="as">Arsenic</option>
 									<option value="cu">Copper</option>
 									<option value="mn">Maganese</option>
@@ -82,87 +73,16 @@
 								<div class='select-arrow color-black'></div>
 							</div>
 						</section>
-							<section id='rgb' class="px12 py12 active">
-							<div class='txt-h5 mb12 color-black'>Band Combinations</div>
-							<div class='select-container wmax-full'>
-								<select id='rgb-selection' class='select select--s select--stroke  wmax-full color-black'>
-									<option value='4,3,2'>Natural Color (4,3,2)</option>
-									<option value='7,6,4'>False Color Urban (7,6,4)</option>
-									<option value='5,4,3'>Color Infrared Vegetation (5,4,3)</option>
-									<option value='6,5,2'>Agriculture (6,5,2)</option>
-									<option value='7,6,5'>Atmospheric Penetration (7,6,5)</option>
-									<option value='5,6,2'>Healthy Vegetation (5,6,2)</option>
-									<option value='7,5,2'>Forest Burn (7,5,2)</option>
-									<option value='5,6,4'>Land/Water (5,6,4)</option>
-									<option value='7,5,3'>Natural With Atmo Removal (7,5,3)</option>
-									<option value='7,5,4'>Shortwave Infrared (7,5,4)</option>
-									<option value='5,7,1'>False color 2 (5,7,1)</option>
-									<option value='6,5,4'>Vegetation Analysis (6,5,4)</option>
-									<option value='custom'>Custom</option>
-								</select>
-								<div class='select-arrow color-black'></div>
-							</div>
-
-							<div id='rgb-buttons' class='align-center px6 py6'>
-								<div class='select-container'>
-									<select id='r' disabled class='select select--stroke select--stroke--2 color-red mx6 my6'>
-										<option value="1">01</option>
-										<option value="2">02</option>
-										<option value="3">03</option>
-										<option selected="selected" value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-
-								<div class='select-container'>
-									<select id='g' disabled class='select select--stroke select--stroke--2 color-green mx6 my6'>
-										<option value="1">01</option>
-										<option value="2">02</option>
-										<option value="3" selected="selected">03</option>
-										<option value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-
-								<div class='select-container'>
-									<select id='b' disabled class='select select--stroke select--stroke--2 color-blue mx6 my6'>
-										<option value="1">01</option>
-										<option value="2" selected="selected">02</option>
-										<option value="3">03</option>
-										<option value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-							</div>
-						</section>
-
 					<div id='params' class="px12 py12 relative">
-							<div class='txt-h5 mb12 color-black'>Histogram Cut</div>
+							<div class='txt-h5 mb12 color-black'>Address Search </div>
 							<div class='px6 py6'>
-								<input id="minCount" class='input input--s wmax60 inline-block align-center color-black' value='2' />
-								<input id="maxCount" class='input input--s wmax60 inline-block align-center color-black ml12' value='98' />
-								<button class='btn bts--xs btn--stroke bg-darken25-on-hover inline-block txt-s color-black ml12' onclick="updateMetadata()">Apply</button>
+								<input id="addr" class='input input--s wmax160 inline-block align-left color-black'  />
 							</div>
-						</div>
-											</div>
+					</div>
+					</div>
 
 					<button id='btn-hide'>
-						<svg id='left' class='icon'><use xlink:href='#icon-arrow-left'/></svg>
+						<svg id='left' class='icon off'><use xlink:href='#icon-arrow-left'/></svg>
 						<!-- <svg id='right' class='icon none'><use xlink:href='#icon-arrow-right'/></svg> -->
 					</button>
 				</div>
@@ -236,6 +156,6 @@
 	<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js'></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/canvas-toblob/0.1/canvas-toBlob.min.js"></script>
 	<script type="text/javascript" src="//cdn.rawgit.com/eligrey/FileSaver.js/1.3.3/FileSaver.min.js"></script>
-	<script type="text/javascript" src="/js/app.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/app1.js" charset="utf-8"></script>
 </body>
 </html>

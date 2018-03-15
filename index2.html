@@ -21,7 +21,7 @@
 <body>
 	<div class="content">
 
-			<div class="site-info in z5">
+			<div class="site-info z5">
 				<div class="info prose">
 					<button id='btn-close-help' class='btn-close-help' onclick='showSiteInfo()'>
 							<svg class='icon icon--l txt-xl'><use xlink:href='#icon-close'/></svg>
@@ -65,11 +65,10 @@
 
 					<div id='menu-content' class='relative'>
 
-						<section id='process' class="px12 py12">
+						<section id='process' class="px12 py12 active">
 							<div class='txt-h5 mb12 color-black'>Constituents</div>
 							<div class='select-container w-full'>
 								<select id='ratio-selection' class='select select--s select--stroke  w-full color-black'>
-									<option value="tpw">Total Phosphorus in Water</option>
 									<option value="as">Arsenic</option>
 									<option value="cu">Copper</option>
 									<option value="mn">Maganese</option>
@@ -82,75 +81,6 @@
 								<div class='select-arrow color-black'></div>
 							</div>
 						</section>
-							<section id='rgb' class="px12 py12 active">
-							<div class='txt-h5 mb12 color-black'>Band Combinations</div>
-							<div class='select-container wmax-full'>
-								<select id='rgb-selection' class='select select--s select--stroke  wmax-full color-black'>
-									<option value='4,3,2'>Natural Color (4,3,2)</option>
-									<option value='7,6,4'>False Color Urban (7,6,4)</option>
-									<option value='5,4,3'>Color Infrared Vegetation (5,4,3)</option>
-									<option value='6,5,2'>Agriculture (6,5,2)</option>
-									<option value='7,6,5'>Atmospheric Penetration (7,6,5)</option>
-									<option value='5,6,2'>Healthy Vegetation (5,6,2)</option>
-									<option value='7,5,2'>Forest Burn (7,5,2)</option>
-									<option value='5,6,4'>Land/Water (5,6,4)</option>
-									<option value='7,5,3'>Natural With Atmo Removal (7,5,3)</option>
-									<option value='7,5,4'>Shortwave Infrared (7,5,4)</option>
-									<option value='5,7,1'>False color 2 (5,7,1)</option>
-									<option value='6,5,4'>Vegetation Analysis (6,5,4)</option>
-									<option value='custom'>Custom</option>
-								</select>
-								<div class='select-arrow color-black'></div>
-							</div>
-
-							<div id='rgb-buttons' class='align-center px6 py6'>
-								<div class='select-container'>
-									<select id='r' disabled class='select select--stroke select--stroke--2 color-red mx6 my6'>
-										<option value="1">01</option>
-										<option value="2">02</option>
-										<option value="3">03</option>
-										<option selected="selected" value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-
-								<div class='select-container'>
-									<select id='g' disabled class='select select--stroke select--stroke--2 color-green mx6 my6'>
-										<option value="1">01</option>
-										<option value="2">02</option>
-										<option value="3" selected="selected">03</option>
-										<option value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-
-								<div class='select-container'>
-									<select id='b' disabled class='select select--stroke select--stroke--2 color-blue mx6 my6'>
-										<option value="1">01</option>
-										<option value="2" selected="selected">02</option>
-										<option value="3">03</option>
-										<option value="4">04</option>
-										<option value="5">05</option>
-										<option value="6">06</option>
-										<option value="7">07</option>
-										<option value="9">09</option>
-										<option value="10">10</option>
-										<option value="11">11</option>
-									</select>
-								</div>
-							</div>
-						</section>
-
 					<div id='params' class="px12 py12 relative">
 							<div class='txt-h5 mb12 color-black'>Histogram Cut</div>
 							<div class='px6 py6'>

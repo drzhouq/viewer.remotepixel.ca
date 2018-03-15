@@ -388,10 +388,10 @@ const initSceneL8 = (sceneID, sceneDate) => {
   $('.errorMessage').addClass('none');
   $('#dl').addClass('none');
 
-  let min = $("#minCount").val();
-  let max = $("#maxCount").val();
-//  let min = 0;
-//  let max = 100;
+//  let min = $("#minCount").val();
+//  let max = $("#maxCount").val();
+  let min = 0;
+  let max = 100;
   const query = `${landsat_services}/metadata/${sceneID}?pmim=${min}&pmax=${max}`;
   $.getJSON(query).done()
     .then(data => {
@@ -560,12 +560,6 @@ const updateRasterTile = () => {
   // PROCESSING
   } else if ($('#process').hasClass('active')) {
     url = `${endpoint}/processing/${meta.sceneid}/{z}/{x}/{y}.png`;
-    bands = ['1', '2', '3', '4', '5', '6', '7',  '10', '11'];
-    for (var i=0; i<bands.length; i++){
-            dos  = dos + `${meta.darkobjects[bands[i]],`;
-            }
-
-    params.darkobjects = dos.subst[0,dos.length-1];
     params.ratio = document.getElementById('ratio-selection').value;
   }
   const url_params = Object.keys(params).map(i => `${i}=${params[i]}`).join('&');
@@ -602,16 +596,16 @@ console.log(url+'?'+url_params);
   const llb = mapboxgl.LngLatBounds.convert([[extent[0],extent[1]], [extent[2],extent[3]]]);
   if (map.getZoom() <= 6) map.fitBounds(llb, {padding: 50});
 
-  let historyParams = {
-    sceneid: meta.sceneid,
-    pmin: $("#minCount").val(),
-    pmax: $("#maxCount").val()
-  }
 //  let historyParams = {
 //    sceneid: meta.sceneid,
-//    pmin: 2,
-//    pmax:98
+//    pmin: $("#minCount").val(),
+//    pmax: $("#maxCount").val()
 //  }
+  let historyParams = {
+    sceneid: meta.sceneid,
+    pmin: 2,
+    pmax:98
+  }
 console.log(historyParams);
    if (params.rgb) historyParams.rgb = params.rgb;
   if (params.ratio) historyParams.ratio = params.ratio;
@@ -658,8 +652,8 @@ const reset = () => {
 
   scope = {};
 
-  $("#minCount").val(2);
-  $("#maxCount").val(98);
+//  $("#minCount").val(2);
+ // $("#maxCount").val(98);
 
   $('.map').removeClass('in');
   $('.list-img').addClass('none');
@@ -682,7 +676,7 @@ const switchPane = (event) => {
   if (map.getSource('raster-tiles')) updateRasterTile();
 };
 
-document.getElementById("rgb-selection").addEventListener("change", (e) => {
+/*document.getElementById("rgb-selection").addEventListener("change", (e) => {
   let rgb = e.target.value;
   if (rgb === 'custom') {
     $('#rgb-buttons select').prop('disabled', false);
@@ -695,8 +689,8 @@ document.getElementById("rgb-selection").addEventListener("change", (e) => {
     if (map.getSource('raster-tiles')) updateRasterTile();
   }
 });
-
-document.getElementById("r").addEventListener("change", () => {
+*/
+/*document.getElementById("r").addEventListener("change", () => {
   if (document.getElementById("rgb-selection").value !== 'custom') return;
   if (map.getSource('raster-tiles')) updateRasterTile();
 });
@@ -710,7 +704,7 @@ document.getElementById("b").addEventListener("change", () => {
   if (document.getElementById("rgb-selection").value !== 'custom') return;
   if (map.getSource('raster-tiles')) updateRasterTile();
 });
-
+*/
 document.getElementById("ratio-selection").addEventListener("change", () => {
   if (map.getSource('raster-tiles')) updateRasterTile();
 });
@@ -788,7 +782,7 @@ const updateSat = () => {
   const sat = 'landsat'
   switch(sat) {
     case 'landsat':
-      landsatUI();
+      //landsatUI();
       break;
     case 'sentinel':
       sentinelUI();
@@ -811,8 +805,8 @@ const updateRGB = (rgb) => {
     document.getElementById('r').value = rgb[0];
     document.getElementById('g').value = rgb[1];
     document.getElementById('b').value = rgb[2];
-    $('#rgb-selection').val("custom").change();
-    $('#rgb-buttons select').prop('disabled', false);
+    //$('#rgb-selection').val("custom").change();
+    //$('#rgb-buttons select').prop('disabled', false);
     switchPane({id: 'rgb'});
   }
 };
@@ -1115,8 +1109,8 @@ map.on('load', () => {
 
   const params = parseParams(window.location.search)
   if (params.tile) config.tile = params.tile;
-  if (params.pmin) $("#minCount").val(params.pmin);
-  if (params.pmax) $("#maxCount").val(params.pmax);
+//  if (params.pmin) $("#minCount").val(params.pmin);
+ // if (params.pmax) $("#maxCount").val(params.pmax);
 
   if (params.sceneid) {
     showSiteInfo();
@@ -1124,27 +1118,27 @@ map.on('load', () => {
     let scene_info;
     let date = ''
     if (/^L[COTEM]08_/.exec(sceneid)) {
-        if (params.rgb) updateRGB(params.rgb);
+       // if (params.rgb) updateRGB(params.rgb);
         if (params.ratio) updateRatio(params.ratio);
         scene_info = parseSceneid_c1(sceneid);
         date = sceneid.split('_')[3];
         initSceneL8(sceneid, date);
     } else if (/^L[COTEM]8/.exec(sceneid)) {
-        if (params.rgb) updateRGB(params.rgb);
+       // if (params.rgb) updateRGB(params.rgb);
         if (params.ratio) updateRatio(params.ratio);
         scene_info = parseSceneid_pre(sceneid);
         initSceneL8(sceneid, date);
     } else if (/^S2/.exec(sceneid)) {
         $(".map-top-right .toggle-group input[sat='sentinel']").prop('checked', true);
         updateSat();
-        if (params.rgb) updateRGB(params.rgb);
+        //if (params.rgb) updateRGB(params.rgb);
         if (params.ratio) updateRatio(params.ratio);
         date = sceneid.split('_')[2];
         initSceneS2(sceneid, date);
     } else if  (/^CBERS/.exec(sceneid)) {
       $(".map-top-right .toggle-group input[sat='cbers']").prop('checked', true);
       updateSat();
-      if (params.rgb) updateRGB(params.rgb);
+      //if (params.rgb) updateRGB(params.rgb);
       if (params.ratio) updateRatio(params.ratio);
       scene_info = parseCBERSid(sceneid);
       initSceneCBERS(sceneid, scene_info.acquisition_date);
